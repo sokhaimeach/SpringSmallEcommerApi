@@ -1,6 +1,13 @@
 package org.backend.smallecommerceapi.controller;
 
+import org.backend.smallecommerceapi.dto.auth.AuthResponse;
+import org.backend.smallecommerceapi.dto.auth.LoginRequest;
+import org.backend.smallecommerceapi.dto.auth.RegisterRequest;
 import org.backend.smallecommerceapi.service.AuthService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -11,5 +18,17 @@ public class AuthController {
 
     public AuthController(AuthService authService) {
         this.authService = authService;
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<AuthResponse> registerUser(@RequestBody RegisterRequest request) {
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(authService.register(request));
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<AuthResponse> loginUser(@RequestBody LoginRequest request) {
+        return ResponseEntity.ok(authService.login(request));
     }
 }
